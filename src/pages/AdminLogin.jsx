@@ -1,6 +1,6 @@
+
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import AdminNavbar from "../components/AdminNavbar";
 import { supabase } from "../lib/supabase";
 
 function AdminLogin() {
@@ -20,15 +20,16 @@ function AdminLogin() {
       } = await supabase.auth.getSession();
 
       if (session?.user) {
-        const { data: admin, error: adminError } =
-          await supabase
-            .from("admin_users")
-            .select("user_id")
-            .eq("user_id", session.user.id)
-            .maybeSingle();
+        const { data: admin, error: adminError } = await supabase
+          .from("admin_users")
+          .select("user_id")
+          .eq("user_id", session.user.id)
+          .maybeSingle();
 
         if (admin && !adminError) {
-          navigate("/admin", { replace: true });
+          navigate("/mt-control-7x9k/dashboard", {
+            replace: true,
+          });
           return;
         }
       }
@@ -55,10 +56,7 @@ function AdminLogin() {
       if (loginError) {
         console.error("Login error:", loginError);
 
-        setError(
-          "Invalid email or password."
-        );
-
+        setError("Invalid email or password.");
         return;
       }
 
@@ -69,12 +67,11 @@ function AdminLogin() {
         return;
       }
 
-      const { data: admin, error: adminError } =
-        await supabase
-          .from("admin_users")
-          .select("user_id")
-          .eq("user_id", user.id)
-          .maybeSingle();
+      const { data: admin, error: adminError } = await supabase
+        .from("admin_users")
+        .select("user_id")
+        .eq("user_id", user.id)
+        .maybeSingle();
 
       if (adminError) {
         console.error(
@@ -101,9 +98,14 @@ function AdminLogin() {
         return;
       }
 
-      navigate("/admin", { replace: true });
+      navigate("/mt-control-7x9k/dashboard", {
+        replace: true,
+      });
     } catch (error) {
-      console.error("Unexpected login error:", error);
+      console.error(
+        "Unexpected login error:",
+        error
+      );
 
       setError(
         "Something went wrong. Please try again."
@@ -115,106 +117,96 @@ function AdminLogin() {
 
   if (checkingSession) {
     return (
-      <>
-        <AdminNavbar />
-
-        <main className="admin-auth-page">
-          <div className="admin-auth-loading">
-            Checking access...
-          </div>
-        </main>
-      </>
+      <main className="admin-auth-page">
+        <div className="admin-auth-loading">
+          Checking access...
+        </div>
+      </main>
     );
   }
 
   return (
-    <>
-      <AdminNavbar />
+    <main className="admin-auth-page">
+      <section className="admin-auth-card">
 
-      <main className="admin-auth-page">
-        <section className="admin-auth-card">
+        <p className="section-eyebrow">
+          THE M TOUCH
+        </p>
 
-          <p className="section-eyebrow">
-            THE M TOUCH
-          </p>
+        <h1>Admin</h1>
 
-          <h1>Admin</h1>
+        <p className="admin-auth-description">
+          Sign in to manage your store.
+        </p>
 
-          <p className="admin-auth-description">
-            Sign in to manage your store.
-          </p>
+        <form
+          className="admin-login-form"
+          onSubmit={handleSubmit}
+        >
+          <div className="form-group">
+            <label htmlFor="admin-email">
+              Email
+            </label>
 
-          <form
-            className="admin-login-form"
-            onSubmit={handleSubmit}
-          >
+            <input
+              id="admin-email"
+              type="email"
+              value={email}
+              onChange={(event) =>
+                setEmail(event.target.value)
+              }
+              placeholder="Admin email"
+              autoComplete="email"
+              required
+            />
+          </div>
 
-            <div className="form-group">
-              <label htmlFor="admin-email">
-                Email
-              </label>
+          <div className="form-group">
+            <label htmlFor="admin-password">
+              Password
+            </label>
 
-              <input
-                id="admin-email"
-                type="email"
-                value={email}
-                onChange={(event) =>
-                  setEmail(event.target.value)
-                }
-                placeholder="Admin email"
-                autoComplete="email"
-                required
-              />
+            <input
+              id="admin-password"
+              type="password"
+              value={password}
+              onChange={(event) =>
+                setPassword(event.target.value)
+              }
+              placeholder="Password"
+              autoComplete="current-password"
+              required
+            />
+          </div>
+
+          {error && (
+            <div className="admin-auth-error">
+              {error}
             </div>
+          )}
 
-            <div className="form-group">
-              <label htmlFor="admin-password">
-                Password
-              </label>
-
-              <input
-                id="admin-password"
-                type="password"
-                value={password}
-                onChange={(event) =>
-                  setPassword(event.target.value)
-                }
-                placeholder="Password"
-                autoComplete="current-password"
-                required
-              />
-            </div>
-
-            {error && (
-              <div className="admin-auth-error">
-                {error}
-              </div>
-            )}
-
-            <button
-              type="submit"
-              className="admin-login-button"
-              disabled={loading}
-            >
-              {loading
-                ? "Signing in..."
-                : "Sign in"}
-
-              <span>→</span>
-            </button>
-
-          </form>
-
-          <Link
-            to="/"
-            className="admin-back-link"
+          <button
+            type="submit"
+            className="admin-login-button"
+            disabled={loading}
           >
-            ← Back to store
-          </Link>
+            {loading
+              ? "Signing in..."
+              : "Sign in"}
 
-        </section>
-      </main>
-    </>
+            <span>→</span>
+          </button>
+        </form>
+
+        <Link
+          to="/"
+          className="admin-back-link"
+        >
+          ← Back to store
+        </Link>
+
+      </section>
+    </main>
   );
 }
 

@@ -17,18 +17,15 @@ import ProductDetails from "./pages/ProductDetails";
 import AdminCollections from "./pages/AdminCollections";
 import OrderStatus from "./pages/OrderStatus";
 import AdminCategories from "./pages/AdminCategories";
+import AdminRoute from "./components/AdminRoute";
 function App() {
   return (
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<Home />} />
-
         <Route path="/shop" element={<Shop />} />
-
         <Route path="/collections" element={<Collections />} />
-
         <Route path="/about" element={<About />} />
-
         <Route path="/contact" element={<Contact />} />
         <Route path="/test-supabase" element={<TestSupabase />} />
         <Route path="/cart" element={<Cart />} />
@@ -36,13 +33,28 @@ function App() {
         <Route path="/order-success" element={<OrderSuccess />} />
         <Route path="/order-status" element={<OrderStatus />} />
         <Route path="/product/:slug" element={<ProductDetails />} />
-          <Route path="/track-order" element={<TrackOrder />} />
-        <Route path="/admin/login" element={<AdminLogin />} />
-        <Route path="/admin" element={<AdminDashboard />} />
-        <Route path="/admin/orders" element={<AdminOrders />} />
-        <Route path="/admin/products" element={<AdminProducts />} />
-        <Route path="/admin/collections" element={<AdminCollections />} />
-        <Route path="/admin/categories" element={<AdminCategories />} />
+        <Route path="/track-order" element={<TrackOrder />} />
+        {/* ========================= PRIVATE ADMIN AREA ========================== */}{" "}
+        {/* Secret login URL */}{" "}
+        <Route path="/mt-control-7x9k" element={<AdminLogin />} />{" "}
+        {/* Protected admin routes */}{" "}
+        <Route element={<AdminRoute />}>
+          {" "}
+          <Route
+            path="/mt-control-7x9k/dashboard"
+            element={<AdminDashboard />}
+          />{" "}
+          <Route path="/mt-control-7x9k/orders" element={<AdminOrders />} />{" "}
+          <Route path="/mt-control-7x9k/products" element={<AdminProducts />} />{" "}
+          <Route
+            path="/mt-control-7x9k/collections"
+            element={<AdminCollections />}
+          />{" "}
+          <Route
+            path="/mt-control-7x9k/categories"
+            element={<AdminCategories />}
+          />{" "}
+        </Route>
       </Routes>
     </BrowserRouter>
   );

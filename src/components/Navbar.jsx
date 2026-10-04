@@ -41,10 +41,6 @@ function Navbar() {
      OPEN SEARCH
      ========================================================= */
 
-  function handleOpenSearch() {
-    setSearchOpen(true);
-    setMenuOpen(false);
-  }
 
   /* =========================================================
      SEARCH PRODUCTS
